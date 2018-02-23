@@ -14,7 +14,7 @@
 		echo("Connected successfully!");
 	}
 
-	$query = mysql_query('SELECT * FROM tableNAME');
+	$query = mysql_query($conn, 'SELECT * FROM reports');
 	if (!$query) {
 		die('Invalid query: ' . mysql_error());
 	}
