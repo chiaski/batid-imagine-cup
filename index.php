@@ -13,4 +13,15 @@
 	else {
 		echo("Connected successfully!");
 	}
+
+	$query = mysql_query('SELECT * FROM tableNAME');
+	if (!$query) {
+		die('Invalid query: ' . mysql_error());
+	}
+
+	$result = mysqli_fetch_assoc($query);
+
+	foreach ($data as $result) {
+		echo('<h3>' . $data . '</h3></br>');
+	}
 ?>
