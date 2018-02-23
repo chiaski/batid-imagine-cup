@@ -11,18 +11,12 @@
 	else {
 		echo("Connected successfully!");
 	}
-<<<<<<< HEAD
 
 	$query = mysqli_query($conn, 'SELECT * FROM batid_db.reports');
 	if (!$query) {
 		die('Invalid query: ' . mysqli_error());
-=======
-	$query = mysqli_query($conn, 'SELECT * FROM reports');
-	if (!$query) {
-		die('Invalid query: ' . mysqli_error($conn));
->>>>>>> 180ad0253564eaa56bd74c13670befc74cc15cab
 	}
-	$result = mysqli_fetch_assoc($query);
+
 	?>
 	<html>
 		<head>
