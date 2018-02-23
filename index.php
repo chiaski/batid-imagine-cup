@@ -14,9 +14,9 @@
 		echo("Connected successfully!");
 	}
 
-	$query = mysqli_query($conn, 'SELECT * FROM reports');
+	$query = mysqli_query($conn, 'SELECT * FROM batid_db.reports');
 	if (!$query) {
-		die('Invalid query: ' . mysql_error());
+		die('Invalid query: ' . mysqli_error());
 	}
 
 	$result = mysqli_fetch_assoc($query);
@@ -29,7 +29,17 @@
 		</head>
 		<body>
 			<table>
-
+				<tr>
+					<td>Longitude</td>
+					<td>Latitude</td>
+					<td>Radius</td>
+					<td>Autho</td>
+					<td>Title</td>
+					<td>Content</td>
+					<td>Severity</td>
+					<td>Upvotes</td>
+					<td>Downvotes</td>
+				</tr>
 <?php
 	while ($result = mysqli_fetch_assoc($query)) {
 		echo "<tr>";
