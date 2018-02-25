@@ -15,15 +15,23 @@
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
     </head>
     <body>
+        
+        <script type="text/javascript">
+            
+function switchFeed(what){
+    $(".feed-wall").fadeOut();
+    $(".feed-" + what).fadeIn("fast");
+}
+        </script>
 
 <div id="container">
 
 <div class="batid-feed">
     <div class="feed-btns">
-        <button>Live Feed</button>
-        <button>Verified Feed</button>
+        <button onclick="switchFeed('live');">Live Feed</button>
+        <button onclick="switchFeed('verified')">Verified Feed</button>
     </div>
-    <div class="feed-live">
+    <div class="feed-wall feed-live">
         <div class="report report-id report-status-live">
         <h2 class="report-title">Title of Report</h2>
         <h3>Reported by Anonymous - Timestamp</h3>
@@ -53,7 +61,23 @@
             <div class="report-box-votes">10 <!--vote count--></div>
         </div>
     </div>
-    <div class="feed-verified"></div>
+    <div class="feed-wall feed-verified">
+    
+        <div class="report report-id report-status-live">
+        <h2>Title of Verified Report</h2>
+        <h3>Reported by Anonymous - Timestamp</h3>
+        <img src="" title="multimedia embed" alt="multimedia embed">
+        <p>Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.</p>
+            <div class="report-box-inner">
+            <button class="report-btn report-btn-locate">Locate</button>
+            <button class="report-btn report-btn-comment">Comment</button>
+                <!--Insert comment/view stamps-->
+                <span class="report-txt-area">General area</span>
+                <span class="report-txt-time">Exact timestamp</span>
+            </div>
+            <div class="report-box-votes">10 <!--vote count--></div>
+        </div>
+    </div>
 </div>
     
 <div class="batid-map" style="width:400px; background: none; border:2px solid #fff;">
