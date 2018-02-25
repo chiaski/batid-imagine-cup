@@ -1,0 +1,186 @@
+<html>
+	<head>
+		<title>Batid</title>
+
+		<script src="js/jquery-3.1.1.min.js"></script>
+		<script src="js/fetch.js"></script>
+
+		<script>
+			function validate() {
+				if($('#lat').val() == "" || $('#lng').val() == "") {
+					alert("Please select coordinates before submitting a report.");
+					return false;
+				}
+
+				if($('#title').val() == "") {
+					alert("Describe the incident. Briefly yet comprehensively.");
+					return false;
+				}
+				
+				if($('#report-desc').val().length < 10) {
+					alert("Please describe the incident more.");
+					return false;
+				}
+
+				if($('input[type=radio][name=severity]:checked').val() == undefined) {
+					alert("Please select a severity.\nYou may refer to the severity ranking chart.");
+					return false;
+				}
+				
+				if($('#name').val() == "") {
+					alert("What is your name?");
+				}
+				return true;
+			}
+		</script>
+
+		<link rel="stylesheet" href="css/style.css"/>
+
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css"/>
+		<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+	</head>
+
+	<body>
+		<div id="batid-map"></div>
+
+		<!-- Someone fix the HTML styling of the form pls thx -->
+		<div id="report" class="modal">
+			<form id="report-content" class="modal-content" action='php/add-report.php' method='post' onsubmit='return validate();'>
+				<span id="report-close" class="close">&times;</span><br/><br/>
+				
+				<input class='textbox' type="text" id='radius' name='radius' placeholder="Radius" value="0"><br/><br/>
+
+				<input class='textbox' type="text" id='title' name='title' placeholder="What happened?"/><br/><br/>
+				<textarea id='report-desc' name='content' placeholder="Describe the event."/></textarea><br/><br/>
+				
+				<input type="radio" name="severity" id="white" value="white">
+				<label for="white">
+					White
+				</label>
+				<input type="radio" name="severity" id="green" value="green">
+				<label for="green">
+					Green
+				</label>
+				<input type="radio" name="severity" id="yellow" value="yellow">
+				<label for="yellow">
+					Yellow
+				</label>
+				<input type="radio" name="severity" id="red" value="red">
+				<label for="red">
+					Red
+				</label><br/><br/>
+
+				<input class='textbox' type="text" id="name" name='author' placeholder="Author"/><br/><br/>
+				<input type="submit" id="submit_button"/>
+			</div>
+		</div>
+
+		<script>
+			var report_popup = $('#report');
+			var report_close = $("#report-close");
+			
+			report_close.click(function() {
+				report_popup.css("display", "none");
+			});
+
+			function addMarker(data) {
+				var max_textlength = 50;
+				var title = '';
+				var x = 1;
+				for(i = 0; i < data.title.length; i++) {
+					title += data.title[i];
+					x++;
+					if(x > max_textlength && data.title[i] == ' ') { 
+						// Change max_textlength to change width of marker popup
+						title += '<br/>';
+						x = 1;
+					}
+				}
+				var marker = L.marker([data.latitude, data.longitude], {icon: marker_colors[data.severity]});
+				var area = L.circle([data.latitude, data.longitude], {radius: data.radius, color: data.severity, opacity:.5});
+			
+				all_markers.addLayer(area);
+				all_markers.addLayer(marker);
+
+				// Format of marker popup :(
+				var top = title+"<br/><br/>Submitted by <em>"+data.author+"</em><br/><br/>"
+				var bottom = data.time_stamp+"<br/><a id='desc-link' href='#'>More info.</a>";
+				var popup_format = top+bottom;
+
+				// Open popup to view full article
+				var container = $('<div/>');
+				container.on('click', '#desc-link', function() {
+					description(data.title);
+				});
+				
+				container.html(popup_format);
+				marker.bindPopup(container[0]);
+			}
+
+			var batid = L.map('batid-map').setView([14.421538, 121.030319], 13);
+			batid.locate({setView : true, enableHighAccuracy : true});
+
+			L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+				maxZoom: 18,
+				attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+					'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+					'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+				id: 'mapbox.streets'
+			}).addTo(batid);
+			
+			var all_markers = L.layerGroup([]);
+			var Marker = L.Icon.extend({
+				options: {
+					shadowUrl: 'shadow.png',
+					iconSize: [10, 10],
+					shadowSize: [12, 18],
+					iconAnchor: [5, 5],
+					shadowAnchor: [7, 3],
+					popupAnchor: [0, -5]
+				}
+			});
+
+			var marker_colors = {
+				red : new Marker({iconUrl: 'img/red.png'}),
+				yellow : new Marker({iconUrl: 'img/yellow.png'}),
+				green : new Marker({iconUrl: 'img/green.png'}),
+				white : new Marker({iconUrl: 'img/white.png'}),
+			};
+		
+			function report(e) {
+				report_popup.css("display", "block");
+				$('#lat').val(e.latlng.lat);
+				$('#lng').val(e.latlng.lng);
+			}
+			batid.on('click', report)
+
+			// DO NOT TOUCH
+			var count = 0;
+			var initial_count = 3;
+			function updateForever() {
+				fetchReports();
+				fetchComments();
+				fetchMultimedia();
+
+				all_markers.clearLayers();
+				for(var i = 0; i < all_reports.length; i++) {
+					addMarker(all_reports[i]);
+				}
+				all_markers.addTo(batid);
+				
+				if(count < initial_count) { 
+					// Update every 1 second to have something on the map
+					count++;
+					var old_repeater = window.setTimeout(updateForever, 1000);
+				}
+				else {
+					// After there are stuff on the map, update every 10 seconds instead
+					window.clearTimeout(old_repeater);
+					var new_repeater = window.setTimeout(updateForever, 10000);
+				}
+			}
+			updateForever();
+		</script>
+	</body>
+</html>
+

@@ -15,5 +15,9 @@ body{
      right:0;top:0;bottom:0;
     box-sizing: border-box;
     padding:.5em;
+}
 
+#batid-map{
+    width: 700px;
+    height: 500px;
 }
