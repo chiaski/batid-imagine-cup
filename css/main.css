@@ -1,0 +1,18 @@
+body{
+    background: #e8bc37;
+}
+
+.batid-feed{
+    width:40%;
+    position:absolute;
+    float:left;
+}
+
+.batid-map{
+    position:absolute;
+    float:right;
+    margin: auto;
+    left:0; right:0;top:0;bottom:0;
+    box-sizing: border-box;
+    padding:.5em;
+}

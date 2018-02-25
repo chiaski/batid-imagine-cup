@@ -1,0 +1,29 @@
+
+/* Report Formatting */
+.report{
+    box-sizing: border-box !important;
+    display:inline-block;
+    width:300px;;
+    background: #fff;
+    padding:.5em; margin-bottom:.5em;
+    border: 0;
+    box-shadow:0 0 10px #eeb813;
+    border-radius:5px;
+}
+
+.report{font-size:11px; font-family: "Roboto"; font-weight:400;}
+
+.report-title{margin:0;}
+.report h2{margin:0;font-size:14px;} .report h3{margin: 0;font-size:11px;font-weight:300;}
+.report p{font-size:11px; text-align:justify; margin-top:.5em; margin-bottom:.5em;}
+.report-txt-area, .report-txt-time{color:#ccc;}
+
+.report-btn{
+    font-size:11px;
+    background:none;
+    border:1px solid #000; 
+    margin:.1em;
+    float:right;
+}
+    
+    
