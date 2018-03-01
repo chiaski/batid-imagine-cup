@@ -1,6 +1,12 @@
 <?php
 	require_once "config.php";
 
+	$query = mysqli_query($conn, "SELECT * FROM batid_db.reports");
+
+	if (!$query) {
+		die('Invalid query: ' . mysqli_error($conn));
+	}
+
 	$all_reports = array();
 	while ($report = mysqli_fetch_assoc($query)) {
 		// $report refers to an individual row in the table
