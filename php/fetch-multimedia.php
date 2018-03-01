@@ -12,7 +12,7 @@
 		$blobs = $blob_list->getBlobs();
 		foreach($blobs as $blob)
 		{
-			$key = $blob->getName()[0];
+			$key = explode("_", pathinfo($blob->getUrl())['filename'])[0];
 			if(!array_key_exists($key, $all_multimedia)) {
 				$all_multimedia[$key] = array($blob->getUrl());
 			}

@@ -31,6 +31,7 @@
 									   'upvotes'=>$report['upvotes'],
 									   'downvotes'=>$report['downvotes'],
 									   'verified'=>$report['verified'],
+									   'multimedia'=>$report['multimedia'],
 									   'time_stamp'=>$report['time_stamp']));
 	}
 	echo json_encode($all_reports);

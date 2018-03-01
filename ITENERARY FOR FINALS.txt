@@ -1,0 +1,25 @@
+THINGS TO DO
+
+// General UX/UI
+- Marker definitions
+- User tutorial (can also be optimized for demo)
+- More variance in sample markers
+
+// Account system
+- Simple account system, social media authentication
+
+// Feed/map
+
+- Radius filtering (feed and hide markers) --> use Haversine formula
+- If possible, vote without refreshing
+- Social media sharing (fix image embed)
+- PERMALINKS ON POSTS (anchor tag?)
+
+
+// Add report
+- Image preview
+- Map marker and radius preview (when writing a report, preview the pin on the map and show the radius adjusting as well upon slide--can be done with pure js I think)
+
+
+// Administrative panel?
+- Showcase report verification
