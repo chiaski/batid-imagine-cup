@@ -48,7 +48,7 @@
 		}
 		
 		if(empty($username_err) && empty($password_err) && empty($confirm_password_err)){
-			$sql = "INSERT INTO users (username, password) VALUES (?, ?)";
+			$sql = "INSERT INTO batid_db.users (username, password) VALUES (?, ?)";
 			 
 			if($stmt = mysqli_prepare($conn, $sql)){
 				mysqli_stmt_bind_param($stmt, "ss", $param_username, $param_password);
