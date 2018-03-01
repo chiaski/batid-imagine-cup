@@ -1,17 +1,7 @@
 <?php
-	// Upload the report data
-	$db = "batid_db";
-	$host = "batidlive.mysql.database.azure.com";
-	$user = "keithyadmin@batidlive";
-	$pass = "Franzlispogi1!";
-
-	$conn = mysqli_init();
-	mysqli_real_connect($conn, $host, $user, $pass);
+	require_once "config.php";
 	
-	if (mysqli_connect_errno($conn)) {
-		die('Failed to connect to MySQL: ' . mysqli_connect_error());
-	}
-
+	// Upload the report data
 	if(!isset($_FILES['attachment']) || $_FILES['attachment']['error'] == UPLOAD_ERR_NO_FILE) {
 		$multimedia_bin = 0;
 	} else {
