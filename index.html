@@ -109,31 +109,7 @@
         <a style="color:#ddd;">Log Out</a>
     </div>
     
-    <script type="text/javascript">
-        $(".header-icon").click(function(){
-            if( $(".batid-dropdown").css('bottom') == "0px") {
-                $(".batid-dropdown").css("bottom", "-1000px");
-            } else{
-                $(".batid-dropdown").css("bottom", "00px");
-            }
-        });  
-        
-        function viewFeed(){
-            if( $(".batid-feed").css('left') == "0px") {
-                $(".batid-feed").css("left", "-600px");
-            } else{
-                $(".batid-feed").css("left", "00px");
-            }
-        }
-        
-        function hideFeed() {
-            if( $(".batid-feed").css('left') == "0px") {
-                $(".batid-feed").css("left", "-600px");
-            } else{
-                $(".batid-feed").css("left", "00px");
-            }
-        }
-        
+    <script type="text/javascript">        
         function locateReport(id) {
                         for(i = 0; i < all_reports.length; i++) {
                             if(all_reports[i].id == id) {
@@ -155,14 +131,7 @@
                         }
                     }
                     
-                    
-        document.addEventListener("keypress", function(event) {
-    if (event.keyCode == 13) {
-            $('#intro').fadeIn("");
-            $(".intro-one").fadeIn('fast').delay(5000).fadeOut('slow');
-            $(".intro-two").hide().delay(5300).fadeIn('slow');
-    }
-})
+              
         
     </script>
 
