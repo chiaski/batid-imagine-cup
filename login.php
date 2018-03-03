@@ -103,7 +103,7 @@
 ?>
         
     <div id="container" style="width:976px;">
-        <div class="content content-login">
+        <div class="content content-login" style="margin: auto; height:500px; background: 0; padding:1em;">
         <center>
             <div class="login-tlogin">
         <h1>Login</h1>
@@ -111,18 +111,26 @@
         <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" class="form-etc">
             
             <left>
+            <table>
+            <tr>
             <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
-                <label for="inpute1">Email</label>
-                <input type="text" name="username" id="inpute1" class="input-email" value="<?php echo $username; ?>">
-                <span class="help-block"><?php echo $username_err; ?></span>
-            </div>    
-                
+                <td>
+                <label for="inpute1">Email</label></td>    
+                <td><input type="text" name="username" id="inpute1" class="input-email" value="<?php echo $username; ?>">
+                <span class="help-block"><?php echo $username_err; ?></span></td>
+            </div>  
+            </tr>  
+            <tr>
             <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
-                <label for="inputp1">Password</label>
-                <input type="password" name="password" class="input-pass" id="inputp1">
+                <td><label for="inputp1">Password</label></td>
+<input type="password" name="password" class="input-pass" id="inputp1">
                 <span class="help-block"><?php echo $password_err; ?></span>
             </div>
-            </left>
+            </tr>
+                
+            </table>
+                
+        
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Login">
             </div>
