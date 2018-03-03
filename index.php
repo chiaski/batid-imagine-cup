@@ -1,3 +1,18 @@
+<?php
+    require_once "php/config.php";
+    $id = $_GET['id'];
+    $sqlstr = "SELECT * FROM batid_db.reports WHERE id=" . $id;
+    $query = mysqli_query($conn, $sqlstr);
+    
+    if (!$query) {
+        die('Invalid query: ' . mysqli_error($conn));
+    }
+    $report = mysqli_fetch_assoc($query);
+    foreach ($report as $key => $value) {
+        echo $key . ': ' . $value . ' </br>';
+    }
+?>
+
 <!doctype html>
 <html lang="">
     <head>
@@ -29,7 +44,6 @@
                     alert("Please describe the incident more.");
                     return false;
                 }
-
                 if($('input[type=radio][name=severity]:checked').val() == undefined) {
                     alert("Please select a severity.\nYou may refer to the severity ranking chart.");
                     return false;
@@ -42,7 +56,6 @@
                 
             }
             
-
             
                 function getLocation() {
                     var geo_options = {
@@ -66,7 +79,6 @@
                     return position.coords.latitude + position.coords.longitude
                 }
                     
-
             
             function addReport(){
              $(".batid-report").fadeToggle();
@@ -114,14 +126,11 @@
                         for(i = 0; i < all_reports.length; i++) {
                             if(all_reports[i].id == id) {
                                 batid.panTo([all_reports[i].latitude, all_reports[i].longitude]);
-
                                 var t = all_reports[i].time_stamp.split(/[- :]/);
                                 var post_time = new Date(Date.UTC(t[0], t[1]-1, t[2], t[3], t[4], t[5]));
                                 var formatted_time = timeSince(post_time.getTime());
-
                                 $('.batid-area').css('top', '-20px');
                                $(".batid-feed").css("left", "-600px");
-
                                 $('.batid-area-title').text(all_reports[i].title);
                                 $('.batid-area-desc').text(all_reports[i].content);
                                 $('.batid-area-timestamp').text(formatted_time);
@@ -325,11 +334,9 @@
                         // Display report popup
                         console.log("");
                     }
-
                     function timeSince(date) {
                         var seconds = Math.floor((new Date() - date) / 1000);
                         var interval = Math.floor(seconds / 31536000);
-
                         if (interval > 1) {
                             return interval + " years";
                         }
@@ -360,11 +367,9 @@
                     
                         all_markers.addLayer(area);
                         all_markers.addLayer(marker);
-
                         var t = data.time_stamp.split(/[- :]/);
                         var post_time = new Date(Date.UTC(t[0], t[1]-1, t[2], t[3], t[4], t[5]));
                         var formatted_time = timeSince(post_time.getTime());
-
                         // Add report data to the feed
                         var verifiedmultimedia = '';
                         if(data.multimedia != 0) {
@@ -406,8 +411,6 @@
                                     <span style="padding-left:.7em;margin:.5em;" class="report-txt report-txt-votecount"> <i class="fas fa-thumbs-up"></i> '+votes+'</span><br />\
                                     <button style="margin:.5em;color:#949285;" class="report-btn report-btn-comment" onclick="commentReport('+data.id+')"><i class="fas fa-comment"></i></button>\
                                 </div></div></div>';
-
-
                         // HAXOR
                         // Check if new content is already on feed. If not, add
                         if(data.verified != 0) {
@@ -424,7 +427,6 @@
                         }
                     }
                     
-
                     // Map stuff
                     var batid = L.map('batid-map', {zoom : 23}).locate({setView : true, enableHighAccuracy : true, watch : true});
                     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
@@ -446,20 +448,17 @@
                             popupAnchor: [0, -5]
                         }
                     });
-
                     var marker_colors = {
                         red : new Marker({iconUrl: 'img/red.png'}),
                         yellow : new Marker({iconUrl: 'img/yellow.png'}),
                         green : new Marker({iconUrl: 'img/green.png'}),
                         white : new Marker({iconUrl: 'img/white.png'}),
                     };
-
                     function report(e) {
                         report_popup.css("display", "block");
                         $('#lat').val(e.latlng.lat);
                         $('#lng').val(e.latlng.lng);
                     }
-
                     // Do not touch: Auto update the feed every 10 seconds
                     var count = 0;
                     var initial_count = 5;
@@ -467,7 +466,6 @@
                         fetchReports();
                         fetchComments();
                         fetchMultimedia();
-
                         all_markers.clearLayers();
                         for(var i = 0; i < all_reports.length; i++) {
                             addMarker(all_reports[i]);
