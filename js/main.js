@@ -7,16 +7,6 @@
 
 
 
-// PURE AESTHETIC //
-
-
-        $(".header-icon").click(function(){
-            if( $(".batid-dropdown").css('bottom') == "0px") {
-                $(".batid-dropdown").css("bottom", "-1000px");
-            } else{
-                $(".batid-dropdown").css("bottom", "00px");
-            }
-        });  
         
 
 // FAKE INTRO SCENE
@@ -31,6 +21,9 @@
 
 
 // FUNCTIONALITIES //
+
+
+
 
 // form validation
 
@@ -68,6 +61,15 @@ function viewFeed(){
         $(".batid-feed").css("left", "00px");
     }
 }
+
+
+function hideFeed() {
+    if( $(".batid-feed").css('left') == "0px") {
+        $(".batid-feed").css("left", "-600px");
+        } else{
+            $(".batid-feed").css("left", "00px");
+        }
+    }
         
 
 function showSeverity(severity){
