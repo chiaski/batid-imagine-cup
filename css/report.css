@@ -43,7 +43,7 @@
 }
 
 
-.report img{width:150px; height:150px; float: right; margin:1em; border-radius:100;}
+.report img{width:60px; height:60px; float: left; margin:.1em .5em 0 .5em; border-radius:100%;}
 
 .report-boxtxt-title{margin:0; font-family: "Work Sans"; font-size:18px !important; color: #170B57;}
 .report h2{margin:0;font-size:14px;} .report h3{margin: 0;font-size:11px;font-weight:300;}
