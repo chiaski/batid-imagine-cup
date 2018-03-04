@@ -186,6 +186,7 @@
                     <a><i class="fas fa-external-link-square-alt"></i> CNN News</a>
                 </div>
 
+                        <img src="http://lokeshdhakar.com/projects/lightbox2/images/thumb-2.jpg" align="right" />
                 <!--Description-->
                 <p class="report-boxtxt-desc">The Chia Corporation's building has been attacked!</p>
 
@@ -308,8 +309,6 @@
                 </div>
 
                 <script>
-                    var report_popup = $('#report-form');
-
                     $("#report-form-close").click(function() {
                         $(".batid-report").fadeOut("fast");
                         $("#report").fadeOut("fast");
@@ -320,12 +319,7 @@
                         $(".batid-report").fadeOut("slow");
                         $(".batid-report-behind").fadeOut("slow");
                     });
-
-
-                    function displayPopup(e) {
-                        // Display report popup
-                        console.log("");
-                    }
+                    
                     function timeSince(date) {
                         var seconds = Math.floor((new Date() - date) / 1000);
                         var interval = Math.floor(seconds / 31536000);
@@ -349,74 +343,6 @@
                             return interval + " minutes";
                         }
                         return Math.floor(seconds) + " seconds";
-                    }
-
-
-                    function addMarker(data) {
-                        var marker = L.marker([data.latitude, data.longitude], {icon: marker_colors[data.severity]});
-                        console.log(marker);
-                        var area = L.circle([data.latitude, data.longitude], {radius: data.radius, color: data.severity, opacity:.5}).on('click', displayPopup);
-
-                        all_markers.addLayer(area);
-                        all_markers.addLayer(marker);
-                        var t = data.time_stamp.split(/[- :]/);
-                        var post_time = new Date(Date.UTC(t[0], t[1]-1, t[2], t[3], t[4], t[5]));
-                        var formatted_time = timeSince(post_time.getTime());
-                        // Add report data to the feed
-                        var verifiedmultimedia = '';
-                        if(data.multimedia != 0) {
-                            verifiedmultimedia += '<img src="'+all_multimedia[data.id]+'" title="multimedia embed" alt="multimedia embed"';
-                        }
-
-
-                        var verifiedstring = '';
-                        if(data.verified != 0){
-                            verifiedstring = ' <!--Verified--> \
-                               <div class="report-verified"> \
-                               <a><i class="fas fa-external-link-square-alt"></i> Journal Link Here</a></div>'
-                        }
-
-                        var votes = data.upvotes-data.downvotes;
-
-                        var keithwtf = '<div class="report report-status" id="report-'+data.id+'"> \
-                            <div class="report-box-votes">\
-                                <button class="report-btn report-btn-vote report-btn-upvotes" onclick="upvoteReport('+data.id+');document.reload()"><i class="fa fa-angle-up"></i></button>\
-                                <button class="report-btn report-btn-vote  report-btn-downvotes" onclick="downvoteReport('+data.id+');document.reload()"><i class="fas fa-angle-down"></i></button>\
-                            </div>\
-                            <!--Time-->\
-                            <div class="report-txt-time">'+formatted_time+'</div>\
-                            <!--Title-->\
-                            <h2 class="report-boxtxt-title">'+data.title+'</h2>\
-                            <!--ifVerified-->\
-                            '+verifiedstring+'\
-                            <!--Multimedia-->'+verifiedmultimedia+'\
-                            <br /><p class="report-boxtxt-desc">'+data.content+'</p>\
-                            <!--YEEEET-->\
-                            <div class="report-box-inner">\
-                                <div class="report-box-inner-left">\
-                                    <span style="margin-left:13px;" class="report-txt report-txt-author"><i class="fas fa-user"></i>  &nbsp;'+data.author+'</span>\
-                                    <br /><button class="report-btn report-btn-locate" onclick="locateReport('+data.id+')"><i class="fas fa-map-marker"></i>  &nbsp; Locate</button>\
-                                    <span class="report-txt report-txt-severity severity-'+data.severity+'"><i class="fas fa-exclamation-circle"></i> Level</span>\
-                                </div>\
-                                <div class="report-box-inner-right" style="width:100px;text-align:left;">\
-                                    <!--VOTE COUNT HERE-->\
-                                    <span style="padding-left:.7em;margin:.5em;" class="report-txt report-txt-votecount"> <i class="fas fa-thumbs-up"></i> '+votes+'</span><br />\
-                                    <button style="margin:.5em;color:#949285;" class="report-btn report-btn-comment" onclick="commentReport('+data.id+')"><i class="fas fa-comment"></i></button>\
-                                </div></div></div>';
-                        // HAXOR
-                        // Check if new content is already on feed. If not, add
-                        if(data.verified != 0) {
-                            if(!$('.feed-verified').find('#report-'+data.id).length && votes >= 0) {
-                                var old = $('.feed-verified').html();
-                                $('.feed-verified').html(keithwtf + old);
-                            }
-                        }
-                        else {
-                            if(!$('.feed-live').find('#report-'+data.id).length && votes >= 0) {
-                                var old = $('.feed-live').html();
-                                $('.feed-live').html(keithwtf + old);
-                            }
-                        }
                     }
 
                     // Map stuff
@@ -446,14 +372,101 @@
                         green : new Marker({iconUrl: 'img/green.png'}),
                         white : new Marker({iconUrl: 'img/white.png'}),
                     };
-                    function report(e) {
-                        report_popup.css("display", "block");
-                        $('#lat').val(e.latlng.lat);
-                        $('#lng').val(e.latlng.lng);
+
+                    function addMarker(data) {
+                        var marker = L.marker([data.latitude, data.longitude],
+                            {icon: marker_colors[data.severity]}).on('click', function () {
+                                    batid.panTo([data.latitude, data.longitude]);
+                                    var t = data.time_stamp.split(/[- :]/);
+                                    var post_time = new Date(Date.UTC(t[0], t[1]-1, t[2], t[3], t[4], t[5]));
+                                    var formatted_time = timeSince(post_time.getTime());
+
+                                    $('.batid-area').css('top', '-20px');
+
+                                    $('.batid-area-title').text(data.title);
+                                    $('.batid-area-desc').text(data.content);
+                                    $('.batid-area-timestamp').text(formatted_time);
+                                    $('.report-txt-severity').addClass('severity-'+data.severity);
+                                    $('.batid-txt-votes').text(data.upvotes - data.downvotes);
+                        });
+                        var area = L.circle([data.latitude, data.longitude], data.radius, 
+                            {
+                                color: data.severity, 
+                                opacity: .5
+                        });
+                        all_markers.addLayer(area);
+                        all_markers.addLayer(marker);
+                        var t = data.time_stamp.split(/[- :]/);
+                        var post_time = new Date(Date.UTC(t[0], t[1]-1, t[2], t[3], t[4], t[5]));
+                        var formatted_time = timeSince(post_time.getTime());
+                        // Add report data to the feed
+                        var verifiedmultimedia = '';
+                        if(data.multimedia != 0) {
+                            verifiedmultimedia += '<img src="'+all_multimedia[data.id]+'" title="multimedia embed" alt="multimedia embed"';
+                        }
+
+
+                        var verifiedstring = '';
+                        if(data.verified != 0){
+                            verifiedstring = ' <!--Verified--> \
+                               <div class="report-verified"> \
+                               <a><i class="fas fa-external-link-square-alt"></i> Journal Link Here</a></div>'
+                        }
+
+                        var votes = data.upvotes-data.downvotes;
+
+                        var keithwtf = '<div class="report report-status" id="report-'+data.id+'"> \
+                            <div class="report-box-votes">\
+                                <button class="report-btn report-btn-vote report-btn-upvotes" onclick="upvoteReport('+data.id+');"><i class="fa fa-angle-up"></i></button>\
+                                <button class="report-btn report-btn-vote  report-btn-downvotes" onclick="downvoteReport('+data.id+');"><i class="fas fa-angle-down"></i></button>\
+                            </div>\
+                            <!--Time-->\
+                            <div class="report-txt-time">'+formatted_time+'</div>\
+                            <!--Title-->\
+                            <h2 class="report-boxtxt-title">'+data.title+'</h2>\
+                            <!--ifVerified-->\
+                            '+verifiedstring+'\
+                            <!--Multimedia-->'+verifiedmultimedia+'\
+                            <br /><p class="report-boxtxt-desc">'+data.content+'</p>\
+                            <!--YEEEET-->\
+                            <div class="report-box-inner">\
+                                <div class="report-box-inner-left">\
+                                    <span style="margin-left:13px;" class="report-txt report-txt-author"><i class="fas fa-user"></i>  &nbsp;'+data.author+'</span>\
+                                    <br /><button class="report-btn report-btn-locate" onclick="locateReport('+data.id+')"><i class="fas fa-map-marker"></i>  &nbsp; Locate</button>\
+                                    <span class="report-txt report-txt-severity severity-'+data.severity+'"><i class="fas fa-exclamation-circle"></i> Level</span>\
+                                </div>\
+                                <div class="report-box-inner-right" style="width:100px;text-align:left;">\
+                                    <!--VOTE COUNT HERE-->\
+                                    <span style="padding-left:.7em;margin:.5em;" class="report-txt report-txt-votecount"> <i class="fas fa-thumbs-up"></i> '+votes+'</span><br />\
+                                    <button style="margin:.5em;color:#949285;" class="report-btn report-btn-comment" onclick="commentReport('+data.id+')"><i class="fas fa-comment"></i></button>\
+                                </div></div></div>';
+                        // HAXOR
+                        // Check if new content is already on feed. If not, add
+                        if(data.verified != 0) {
+                            if(!$('.feed-verified').find('#report-'+data.id).length && votes >= 0) {
+                                var old = $('.feed-verified').html();
+                                $('.feed-verified').html(keithwtf + old);
+                            }
+                            else if($('.feed-verified').find('#report-'+data.id).length) {
+                                if($('#report-'+data.id).find('.report-txt-votecount').text() != '<i class="fas fa-thumbs-up"></i> '+votes) {
+                                    $('#report-'+data.id).find('.report-txt-votecount').html('<i class="fas fa-thumbs-up"></i> '+votes)
+                                }
+                            }
+                        } 
+                        else {
+                            if(!$('.feed-live').find('#report-'+data.id).length && votes >= 0) {
+                                var old = $('.feed-live').html();
+                                $('.feed-live').html(keithwtf + old);
+                            }
+                            else if($('.feed-live').find('#report-'+data.id).length) {
+                                if($('#report-'+data.id).find('.report-txt-votecount').html() != '<i class="fas fa-thumbs-up"></i> '+votes) {
+                                    $('#report-'+data.id).find('.report-txt-votecount').html('<i class="fas fa-thumbs-up"></i> '+votes)
+                                }
+                            }
+                        }
                     }
+                    
                     // Do not touch: Auto update the feed every 10 seconds
-                    var count = 0;
-                    var initial_count = 5;
                     function updateForever() {
                         fetchReports();
                         fetchComments();
@@ -463,17 +476,7 @@
                             addMarker(all_reports[i]);
                         }
                         all_markers.addTo(batid);
-
-                        if(count < initial_count) {
-                            // Update every 1 second to have something on the map
-                            count++;
-                            var old_repeater = window.setTimeout(updateForever, 1000);
-                        }
-                        else {
-                            // After there are stuff on the map, update every 10 seconds instead
-                            window.clearTimeout(old_repeater);
-                            var new_repeater = window.setTimeout(updateForever, 10000);
-                        }
+                        var repeater = window.setTimeout(updateForever, 500);
                     }
                     updateForever();
                     <?php
@@ -485,6 +488,7 @@
         </div>
 
         <script src="js/main.js"></script>
+        <script src="js/lightbox.min.js"></script>
 
     </body>
 </html>
