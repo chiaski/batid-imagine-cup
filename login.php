@@ -25,23 +25,15 @@
 
     <body>   
         
+
         
     <div id="batid-header">
         <center>
-            <button class="header-button" onclick="viewFeed();"><i class="fas fa-list"></i><br />View Feed</button>
-            <button class="header-button" onclick="addReport();"><i class="fas fa-pencil-alt"></i><br />Add Report</button>
+            <button class="header-button" href="index.php"><i class="fas fa-map"></i><br />Map</button>
+            <button class="header-button" href="login.php"><i class="fas fa-user"></i><br />Account</button>
         </center>
-        <div class="header-icon"><img src="https://i.imgur.com/MB30klE.png" /></div>
     </div>
         
-    <div class="batid-dropdown">
-        <a>Home</a>
-        <a>Map</a>
-        <a>Feed</a>
-        <a>Account</a>
-        <a>Settings</a>
-        <a style="color:#ddd;">Log Out</a>
-    </div>
  <?php
     require_once "php/config.php";
 

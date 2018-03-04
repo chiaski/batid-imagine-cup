@@ -15,6 +15,17 @@ a{
     color: #fff;
 }
 
+.btn-default{
+    display:inline-block;
+    width:100px;
+    padding:1em !important;
+    font-size:22px;
+    font-weight:500;
+    background: #faf5ea;
+    color: #000;
+}
+
+
 .input-pass, .input-email{
     display:inline-block;
     width:60%;
