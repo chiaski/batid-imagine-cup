@@ -1,19 +1,3 @@
-<?php
-    require_once "php/config.php";
-    $id = $_GET['id'];
-    $sqlstr = "SELECT * FROM batid_db.reports WHERE id=" . $id;
-    $query = mysqli_query($conn, $sqlstr);
-    
-    if (!$query) {
-        die('Invalid query: ' . mysqli_error($conn));
-    }
-    $report = mysqli_fetch_assoc($query);
-    foreach ($report as $key => $value) {
-        echo $key . ': ' . $value . ' </br>';
-    }
-?>
-
-<!doctype html>
 <html lang="">
     <head>
         <meta charset="utf-8">
@@ -27,7 +11,7 @@
         <link rel="stylesheet" href="css/report.css">
 
         <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
-        
+
         <script src="js/fetch.js"></script>
         <script src="js/upvote-downvote.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.js"></script>
@@ -39,7 +23,7 @@
                     alert("What happened? Make it short and concise.");
                     return false;
                 }
-                
+
                 if($('#report-desc').val().length < 10) {
                     alert("Please describe the incident more.");
                     return false;
@@ -48,29 +32,29 @@
                     alert("Please select a severity.\nYou may refer to the severity ranking chart.");
                     return false;
                 }
-                
+
                 if($('#name').val() == "") {
                     alert("What is your name?");
                 }
                 return true;
-                
+
             }
-            
-            
+
+
                 function getLocation() {
                     var geo_options = {
-                        enableHighAccuracy: false, 
-                        maximumAge        : 5 * 60 * 1000, 
+                        enableHighAccuracy: false,
+                        maximumAge        : 5 * 60 * 1000,
                         timeout           : 60 * 1000
                     }
                     if (navigator.geolocation) {
                         navigator.geolocation.getCurrentPosition(reportPosition, null, geo_options);
-                        
-                    } else { 
+
+                    } else {
                         alert("Geolocation is not supported by this browser or is not allowed by the client");
                     }
                 }
-                
+
                 function reportPosition(position) {
                     document.getElementById('lat').value = position.coords.latitude;
                     document.getElementById('lng').value = position.coords.longitude;
@@ -78,32 +62,35 @@
                     batid.panTo(new L.LatLng(position.coords.latitude, position.coords.longitude));
                     return position.coords.latitude + position.coords.longitude
                 }
-                    
-            
+
+
             function addReport(){
              $(".batid-report").fadeToggle();
              $(".batid-report-behind").fadeToggle();
               $("#report").fadeToggle();
                 getLocation();
             }
-            
-            
+
+
             function switchFeed(what){
                 $(".feed-wall").fadeOut();
                 $(".feed-" + what).fadeIn("fast");
             }
-            
-            
-            
+
+
+
         </script>
-        
+
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css"/>
         <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
     </head>
 
-    <body>   
-        
-        
+    <body>
+      <?php
+          require_once "php/config.php";
+          $id = $_GET['id'];
+      ?>
+
     <div id="batid-header">
         <center>
             <button class="header-button" onclick="viewFeed();"><i class="fas fa-list"></i><br />View Feed</button>
@@ -111,7 +98,7 @@
         </center>
         <div class="header-icon"><img src="https://i.imgur.com/MB30klE.png" /></div>
     </div>
-        
+
     <div class="batid-dropdown">
         <a>Home</a>
         <a>Map</a>
@@ -120,8 +107,8 @@
         <a>Settings</a>
         <a style="color:#ddd;">Log Out</a>
     </div>
-    
-    <script type="text/javascript">        
+
+    <script type="text/javascript">
         function locateReport(id) {
                         for(i = 0; i < all_reports.length; i++) {
                             if(all_reports[i].id == id) {
@@ -130,7 +117,7 @@
                                 var post_time = new Date(Date.UTC(t[0], t[1]-1, t[2], t[3], t[4], t[5]));
                                 var formatted_time = timeSince(post_time.getTime());
                                 $('.batid-area').css('top', '-20px');
-                               $(".batid-feed").css("left", "-600px");
+                                $(".batid-feed").css("left", "-600px");
                                 $('.batid-area-title').text(all_reports[i].title);
                                 $('.batid-area-desc').text(all_reports[i].content);
                                 $('.batid-area-timestamp').text(formatted_time);
@@ -139,9 +126,9 @@
                             }
                         }
                     }
-                    
-              
-        
+
+
+
     </script>
 
         <div id="intro">
@@ -151,10 +138,10 @@
                 <center>Keith Leonardo</center></a></center>
             </div>
         </div>
-        
-        
-        
-        
+
+
+
+
         <div id="container" style="width:976px;">
             <div class="batid-feed">
                 <div class="feed-btns">
@@ -163,69 +150,69 @@
                     <button onclick="switchFeed('verified')">Verified Feed</button>
                     </center>
                 </div>
-                
+
                 <h1>What's happening?</h1>
                 <div class="feed-wall feed-live">
-    
-                
+
+
                  </div>
-                    
-        
-                
+
+
+
                 <div class="feed-wall feed-verified">
-                
+
                 <div class="report report-status-live" id="report-21">
-                
+
                 <!--Voting, only appears on hover-->
                 <div class="report-box-votes">
                     <button class="report-btn report-btn-vote report-btn-upvotes"><i class="fa fa-angle-up"></i></button>
                     <button class="report-btn report-btn-vote  report-btn-downvotes"><i class="fas fa-angle-down"></i></button>
                 </div>
-                    
+
                 <!--Time-->
                 <div class="report-txt-time">3 seconds</div>
-                    
-                        
+
+
                 <!--Title-->
                 <h2 class="report-boxtxt-title">Terrorist Bombing in Ayala Plaza</h2>
-                        
+
                 <!--Verified-->
                 <div class="report-verified">
-                    <a><i class="fas fa-external-link-square-alt"></i> CNN News</a>  
+                    <a><i class="fas fa-external-link-square-alt"></i> CNN News</a>
                 </div>
-                        
+
                 <!--Description-->
                 <p class="report-boxtxt-desc">The Chia Corporation's building has been attacked!</p>
-                        
+
 
                 <!--Yeet-->
                 <div class="report-box-inner">
-                    
+
                     <div class="report-box-inner-left">
                         <span style="margin-left:13px;" class="report-txt report-txt-author"><i class="fas fa-user"></i> Chia Amisola</span>
                         <br />
-                        <button class="report-btn report-btn-locate" onclick="locateReport(21)"><i class="fas fa-map-marker"></i> Locate</button> 
+                        <button class="report-btn report-btn-locate" onclick="locateReport(21)"><i class="fas fa-map-marker"></i> Locate</button>
                         <span class="report-txt report-txt-severity severity-red"><i class="fas fa-exclamation-circle"></i> Level</span>
                     </div>
-                    
+
                     <div class="report-box-inner-right" style="width:100px;text-align:left;">
                         <!--Vote count here-->
                         <span style="padding-left:.7em;margin:.5em;" class="report-txt report-txt-votecount"> <i class="fas fa-thumbs-up"> 4</i></span>
                         <br />
                         <button style="margin:.5em;color:#949285;" class="report-btn report-btn-comment" onclick="commentReport(21)"><i class="fas fa-comment"></i></button>
                     </div>
-                    
+
                 </div>
-                
-                
+
+
             </div>
-                
-                    
-                    
-                
+
+
+
+
             </div>
             </div>
-    
+
             <div class="batid-area">
             <!--White box that displays information about reports-->
             <h1 class="batid-area-title">Robbery and mass shooting rawr</h1>
@@ -235,14 +222,14 @@
                     <div class="batid-area-lower-left">
                         <span class="report-txt report-txt-severity"><i class="fas fa-exclamation-circle"></i></span>
                     </div>
-                    
+
                     <div class="batid-area-lower-right">
                         <i class="fas fa-thumbs-up"> 3</i> <span class="batid-txt-votes">Votes</span>
                     </div>
-                    
+
                 </div>
             </div>
-    
+
             <div class="batid-map" id="batid-map" style="width:800px; background: none; border:2px solid #fff;">
                 <!--Batid map here-->
                 <h1>Map</h1>
@@ -252,7 +239,7 @@
                 function showSeverity(severity){
                     $(".batid-severity-show").text(severity);
                 }
-                                
+
                 function showVal(newVal){
                     $(".batid-radius-show").text(newVal);
                 }</script>
@@ -269,9 +256,9 @@
                         <!-- Coordinates -->
                         <input class='report-box-coord' type="text" id='lng' name='lng' placeholder="Longitude"/>
                         <input class='report-box-coord' type="text" id='lat' name='lat' placeholder="Latitude"/>
-                        
+
                         <!-- Severity -->
-                        
+
                         <table>
                             <tr>
                                 <td class="report-label-area">Severity<br /><span class="batid-radius-container"><span class="batid-severity-show"></span></span></td>
@@ -295,7 +282,7 @@
                         </label><div class="batid-s-check"style="background: #E32222;"></div></li></ul></td>
                             </tr>
                             <tr>
-                                <td class="report-label-area">Radius<br /><span class="batid-radius-container"><span class="batid-radius-show"></span> meters</span></td> 
+                                <td class="report-label-area">Radius<br /><span class="batid-radius-container"><span class="batid-radius-show"></span> meters</span></td>
                                 <td>
   <input style="width:100%;" type="range" min="10" max="150" value="50" step="5" class="slider" id="radius" oninput="showVal(this.value)" onchange="showVal(this.value)"></td>
                             </tr>
@@ -305,9 +292,9 @@
                             <span class="report-label-area">Description</span>
                         <textarea id='report-desc' name='content' class='batid-txt-desc' placeholder="Describe the event and write down any details and incidents that you recall or have footage of."></textarea>
                         <br />
-            
+
                         <label class="batid-file-container"><i class="fas fa-camera"></i><input type="file" name="attachment" accept="image/*"></label>
-                        
+
                         <br />
 
                         <span class="report-label-area">Submitted by </span> <input class='batid-txt-author' type="text" id="name" name='author' value='Keithy' placeholder="Author"/><br/><br/></div>
@@ -317,19 +304,19 @@
 
                 <script>
                     var report_popup = $('#report-form');
-                    
+
                     $("#report-form-close").click(function() {
                         $(".batid-report").fadeOut("fast");
                         $("#report").fadeOut("fast");
                     });
-                
-                    
+
+
                     $(".batid-report-behind").click(function() {
                         $(".batid-report").fadeOut("slow");
                         $(".batid-report-behind").fadeOut("slow");
                     });
-                    
-                    
+
+
                     function displayPopup(e) {
                         // Display report popup
                         console.log("");
@@ -358,13 +345,13 @@
                         }
                         return Math.floor(seconds) + " seconds";
                     }
-                    
-                    
+
+
                     function addMarker(data) {
                         var marker = L.marker([data.latitude, data.longitude], {icon: marker_colors[data.severity]});
                         console.log(marker);
                         var area = L.circle([data.latitude, data.longitude], {radius: data.radius, color: data.severity, opacity:.5}).on('click', displayPopup);
-                    
+
                         all_markers.addLayer(area);
                         all_markers.addLayer(marker);
                         var t = data.time_stamp.split(/[- :]/);
@@ -375,17 +362,17 @@
                         if(data.multimedia != 0) {
                             verifiedmultimedia += '<img src="'+all_multimedia[data.id]+'" title="multimedia embed" alt="multimedia embed"';
                         }
-                        
-                        
+
+
                         var verifiedstring = '';
                         if(data.verified != 0){
                             verifiedstring = ' <!--Verified--> \
                                <div class="report-verified"> \
                                <a><i class="fas fa-external-link-square-alt"></i> Journal Link Here</a></div>'
                         }
-                        
+
                         var votes = data.upvotes-data.downvotes;
-                        
+
                         var keithwtf = '<div class="report report-status" id="report-'+data.id+'"> \
                             <div class="report-box-votes">\
                                 <button class="report-btn report-btn-vote report-btn-upvotes" onclick="upvoteReport('+data.id+');document.reload()"><i class="fa fa-angle-up"></i></button>\
@@ -418,7 +405,7 @@
                                 var old = $('.feed-verified').html();
                                 $('.feed-verified').html(keithwtf + old);
                             }
-                        } 
+                        }
                         else {
                             if(!$('.feed-live').find('#report-'+data.id).length && votes >= 0) {
                                 var old = $('.feed-live').html();
@@ -426,7 +413,7 @@
                             }
                         }
                     }
-                    
+
                     // Map stuff
                     var batid = L.map('batid-map', {zoom : 23}).locate({setView : true, enableHighAccuracy : true, watch : true});
                     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
@@ -436,7 +423,7 @@
                             'Imagery © <a href="http://mapbox.com">Mapbox</a>',
                         id: 'mapbox.streets'
                     }).addTo(batid);
-                    
+
                     var all_markers = L.layerGroup([]);
                     var Marker = L.Icon.extend({
                         options: {
@@ -471,8 +458,8 @@
                             addMarker(all_reports[i]);
                         }
                         all_markers.addTo(batid);
-                        
-                        if(count < initial_count) { 
+
+                        if(count < initial_count) {
                             // Update every 1 second to have something on the map
                             count++;
                             var old_repeater = window.setTimeout(updateForever, 1000);
@@ -484,9 +471,26 @@
                         }
                     }
                     updateForever();
+                    <?php
+                        echo 'setTimeout("locateReport(' . $id . ');",2250);';
+                        if(session_id() == '' || !isset($_SESSION)) {
+                          session_start();
+                          $username = $_SESSION['username'];
+                          if ($username) {
+                            echo ' alert("Logged in as: ' . $username .'");';
+                          } else {
+                            echo ' alert("Not Logged in! ' . $username . '");';
+                          }
+                        } else {
+                          echo ' alert("Something Wrong Happened")';
+                        }
+                    ?>
+
                 </script>
             </div>
         </div>
+
         <script src="js/main.js"></script>
+
     </body>
 </html>
