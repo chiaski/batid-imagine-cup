@@ -36,3 +36,21 @@ a{
 p{
     font-weight:100;
 }
+
+.severitycircle{
+    width:15px;
+    height:15px;
+    display:inline-block;
+    border-radius:100%;
+}
+
+.batid-map-severitybar{
+    margin:0 auto;
+    top:150px;
+    z-index:9;
+    width:250px;
+    background: #fff;
+    box-shadow: #ccc 0 0 15px;
+    border-radius:15px;
+    position:absolute;
+}

@@ -245,6 +245,13 @@
                 </div>
             </div>
 
+            <div class="batid-map-severitybar">
+            <span class="severitycircle" style="background: #edebd1;"></span> White 
+            <span class="severitycircle" style="background: #21844b;"></span> Green 
+            <span class="severitycircle" style="background: #e2a415;"></span> Yellow 
+            <span class="severitycircle" style="background: #e21515;"></span> Red
+            </div>
+            
             <div class="batid-map" id="batid-map" style="width:800px; background: none; border:2px solid #fff;">
                 <!--Batid map here-->
                 <h1>Map</h1>
