@@ -23,17 +23,23 @@
         }
 
         if(empty($error)){
-            $sql = "SELECT * FROM batid_db.users WHERE username='" . $username . "' AND password='" . $password . "'";
+            $sql = "SELECT password FROM batid_db.users WHERE username='" . $username . "'";
             $query = mysqli_query($conn, $sql);
+
             if (!(mysqli_num_rows($query) == 0)) {
-              if(session_id() == '' || !isset($_SESSION)) {
-                // session isn't started
-                session_start();
+              $row=mysqli_fetch_array($result,MYSQLI_ASSOC);
+              $hashed_password = $row['password'];
+              $verify = password_verify($password, $hashed_password);
+              if ($verify) {
+                if(session_id() == '' || !isset($_SESSION)) {
+                  // session isn't started
+                  session_start();
+                }
+                $_SESSION['username'] = $username;
+                header("location: index.php");
               }
-              $_SESSION['username'] = $username;
-              header("location: index.php");
             } else {
-            
+
             }
             mysqli_close($conn);
          }

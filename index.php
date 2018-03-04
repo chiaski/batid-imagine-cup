@@ -18,6 +18,19 @@
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.js"><\/script>')</script>
 
         <script>
+            <?php
+            if(session_id() == '' || !isset($_SESSION)) {
+              session_start();
+              $curusername = $_SESSION['username'];
+              if ($curusername) {
+                echo ' alert("Logged in as: ' . $curusername .'");';
+              } else {
+                echo ' alert("Not Logged in! ' . $curusername . '");';
+              }
+            } else {
+              echo ' alert("Something Wrong Happened")';
+            }
+            ?>
             function validate() {
                 if($('#title').val() == "") {
                     alert("What happened? Make it short and concise.");
@@ -297,7 +310,7 @@
 
                         <br />
 
-                        <span class="report-label-area">Submitted by </span> <input class='batid-txt-author' type="text" id="name" name='author' value='Keithy' placeholder="Author"/><br/><br/></div>
+                        <span class="report-label-area">Submitted by </span> <?php echo '<input class="batid-txt-author" type="text" id="name" value="'.$curusername.'" placeholder="Anonymous"/>'; ?><br/><br/></div>
                         <center><input class="batid-txt-submit" type="submit" id="submit_button"/></center>
                     </form>
                 </div>
@@ -473,17 +486,6 @@
                     updateForever();
                     <?php
                         echo 'setTimeout("locateReport(' . $id . ');",2250);';
-                        if(session_id() == '' || !isset($_SESSION)) {
-                          session_start();
-                          $username = $_SESSION['username'];
-                          if ($username) {
-                            echo ' alert("Logged in as: ' . $username .'");';
-                          } else {
-                            echo ' alert("Not Logged in! ' . $username . '");';
-                          }
-                        } else {
-                          echo ' alert("Something Wrong Happened")';
-                        }
                     ?>
 
                 </script>
