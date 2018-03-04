@@ -1,4 +1,10 @@
+
+
 <!doctype html>
+<?php
+    require_once "php/config.php";
+    $id = $_GET['id'];
+?>
 <html lang="">
     <head>
         <meta charset="utf-8">
@@ -470,12 +476,14 @@
                     }
                     updateForever();
                     <?php
-                        $id = $_GET['id'];
-                        setTimeout("locateReport(' . $id . ');",2500);
+                        echo 'setTimeout("locateReport(' . $id . ');",2250)';
                     ?>
+
                 </script>
             </div>
         </div>
+
         <script src="js/main.js"></script>
+
     </body>
 </html>
