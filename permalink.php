@@ -45,11 +45,10 @@
 
                 for(var i = 0; i < all_reports.length; i++) {
                     if(all_reports[i].id == id) {
-                    	$('.report-title').text(all_reports[i].title);
-                    	$('.report-content').text(all_reports[i].content);
+                    	$('.report-title').text(all_reports[Number(i)].title);
+                    	$('.report-content').text(all_reports[Number(i)].content);
                     }
                 }
-                all_markers.addTo(batid);
                 var repeater = window.setTimeout(updateForever, 1000);
             }
             updateForever();
