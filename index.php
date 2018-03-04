@@ -12,6 +12,8 @@
 
         <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
 
+        <link rel="stylesheet" href="css/lightbox.min.css">
+        
         <script src="js/fetch.js"></script>
         <script src="js/upvote-downvote.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.js"></script>
@@ -194,6 +196,7 @@
                     <a><i class="fas fa-external-link-square-alt"></i> CNN News</a>
                 </div>
 
+                <a href="http://lokeshdhakar.com/projects/lightbox2/images/thumb-2.jpg" data-lightbox="eh" align="right"><img src="http://lokeshdhakar.com/projects/lightbox2/images/thumb-2.jpg" /></a>
                 <!--Description-->
                 <p class="report-boxtxt-desc">The Chia Corporation's building has been attacked!</p>
 
@@ -373,7 +376,7 @@
                         // Add report data to the feed
                         var verifiedmultimedia = '';
                         if(data.multimedia != 0) {
-                            verifiedmultimedia += '<img src="'+all_multimedia[data.id]+'" title="multimedia embed" alt="multimedia embed"';
+                            verifiedmultimedia += '<a href="'+all_multimedia[data.id]+'" data-lightbox="' + data.id + '"><img src="'+all_multimedia[data.id]+'" title="multimedia embed" alt="multimedia embed" /></a>';
                         }
 
 
