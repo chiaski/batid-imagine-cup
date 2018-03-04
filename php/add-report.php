@@ -1,6 +1,14 @@
 <?php
 	require_once "config.php";
-	
+	if(session_id() == '' || !isset($_SESSION)) {
+		// session isn't started
+		session_start();
+	}
+	if ($_SESSION['username']) {
+		$username = $_SESSION['username'];
+	} else {
+		$username = 'Anonymous';
+	}
 	// Upload the report data
 	if(!isset($_FILES['attachment']) || $_FILES['attachment']['error'] == UPLOAD_ERR_NO_FILE) {
 		$multimedia_bin = 0;
@@ -9,9 +17,9 @@
 	}
 
 	$insert = "INSERT INTO batid_db.reports (longitude, latitude, radius, author, title, content, severity, multimedia) VALUES ";
-	$value = "(".floatval($_POST['lng']).", ".floatval($_POST['lat']).", ".floatval($_POST['radius']).", '".$_POST['author']."', '".$_POST['title']."', '".$_POST['content']."', '".$_POST['severity']."', ".$multimedia_bin.")";
+	$value = "(".floatval($_POST['lng']).", ".floatval($_POST['lat']).", ".floatval($_POST['radius']).", '".$username."', '".$_POST['title']."', '".$_POST['content']."', '".$_POST['severity']."', ".$multimedia_bin.")";
 	$command = $insert . $value;
-	
+
 	$query = mysqli_query($conn, $command);
 	if (!$query) {
 		die('Invalid query: ' . mysqli_error($conn));

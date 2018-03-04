@@ -12,11 +12,10 @@
 
         if(empty(trim($_POST["username"]))) {
             $username_err = "Please enter a username.";
-        }
-        else {
-            $sql = "SELECT id FROM batid_db.users WHERE username='" . trim($_POST["username"] . "'");
+        } else {
+            $sql = "SELECT * FROM batid_db.users WHERE username='" . trim($_POST["username"] . "'");
             $query = mysqli_query($conn,$sql);
-            if ($query) {
+            if (mysqli_num_rows($query)>0) {
               $username_err = 'Username already taken';
             } else {
               $username = trim($_POST["username"]);
@@ -27,9 +26,9 @@
             $email_err = "Please enter a valid email.";
         }
         else {
-            $sql = "SELECT id FROM batid_db.users WHERE email='" . trim($_POST["email"] . "'");
+            $sql = "SELECT * FROM batid_db.users WHERE email='" . trim($_POST["email"] . "'");
             $query = mysqli_query($conn,$sql);
-            if ($query) {
+            if (mysqli_num_rows($query)>0) {
               $email_err = 'Email already in use';
             } else {
               $email = trim($_POST["email"]);
@@ -55,11 +54,16 @@
         }
 
         if(empty($username_err) && empty($email_err) && empty($password_err) && empty($confirm_password_err)) {
+            $password = password_hash($password, PASSWORD_DEFAULT);
             $sql = "INSERT INTO batid_db.users (username, email, password) VALUES ('".$username."','".$email."','".$password."')";
             $query = mysqli_query($conn,$sql);
             if(!$query) {
               echo "Something went wrong. Please try again later. " . $username . ' ' . $password . ' ' . $email . '</br> Error Message:' . mysqli_error($conn);
             } else {
+              if(session_id() == '' || !isset($_SESSION)) {
+                // session isn't started
+                session_start();
+              }
               $_SESSION['username'] = $username;
               header("location: index.php");
             }
