@@ -114,17 +114,18 @@
             <table>
             <tr>
             <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
-                <td>
+                <td style="width:150px;">
                 <label for="inpute1">Email</label></td>    
-                <td><input type="text" name="username" id="inpute1" class="input-email" value="<?php echo $username; ?>">
+                <td style="width:350px;"><input type="text" name="username" id="inpute1" class="input-email" value="<?php echo $username; ?>">
                 <span class="help-block"><?php echo $username_err; ?></span></td>
             </div>  
             </tr>  
             <tr>
             <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
-                <td><label for="inputp1">Password</label></td>
-<input type="password" name="password" class="input-pass" id="inputp1">
-                <span class="help-block"><?php echo $password_err; ?></span>
+                <td style="width:150px;"><label for="inputp1">Password</label></td>
+                <td style="width:350px;">
+                <input type="password" name="password" class="input-pass" id="inputp1">
+                <span class="help-block"><?php echo $password_err; ?></span></td>
             </div>
             </tr>
                 
