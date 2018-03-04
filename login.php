@@ -42,68 +42,50 @@
         <a>Settings</a>
         <a style="color:#ddd;">Log Out</a>
     </div>
-    
-<?php
+ <?php
     require_once "php/config.php";
-    
     if($_SERVER["REQUEST_METHOD"] == "POST") {
         $username = "";
         $password = "";
         $error = "";
-
+        $_POST['username'] = mysqli_real_escape_string($conn, $_POST['username']);
+        $_POST['password'] = mysqli_real_escape_string($conn, $_POST['password']);
         if(empty(trim($_POST["username"]))){
             $error = 'Please enter username.';
-        } 
+        }
         else {
             $username = trim($_POST["username"]);
         }
-        
         if(empty(trim($_POST['password']))){
             $error = 'Please enter your password.';
-        } 
+        }
         else {
             $password = trim($_POST['password']);
         }
-        
         if(empty($error)){
-            $sql = "SELECT username, password FROM batid_db.users WHERE username = ?";
-            
-            if($stmt = mysqli_prepare($conn, $sql)){
-                mysqli_stmt_bind_param($stmt, "s", $param_username);
-                $param_username = $username;
-                
-                if(mysqli_stmt_execute($stmt)){
-                    mysqli_stmt_store_result($stmt);
-                    if(mysqli_stmt_num_rows($stmt) == 1){
-                        mysqli_stmt_bind_result($stmt, $username, $hashed_password);
-                        
-                        if(mysqli_stmt_fetch($stmt)){
-                            if(password_verify($password, $hashed_password)){
-                                session_start();
-                                $_SESSION['username'] = $username;
-                                header("location: index.php");
-                            } 
-                            else {
-                                $error = 'Either your username or password is incorrect.';
-                            }
-                        }
-                    } 
-                    else {
-                        $error = 'Either your username or password is incorrect.';
-                    }
-                } 
-                else {
-                    echo "Oops! Something went wrong. Please try again later.";
+            $sql = "SELECT password FROM batid_db.users WHERE username='" . $username . "'";
+            $query = mysqli_query($conn, $sql);
+            if (!(mysqli_num_rows($query) == 0)) {
+              $row=mysqli_fetch_array($result,MYSQLI_ASSOC);
+              $hashed_password = $row['password'];
+              $verify = password_verify($password, $hashed_password);
+              if ($verify) {
+                if(session_id() == '' || !isset($_SESSION)) {
+                  // session isn't started
+                  session_start();
                 }
+                $_SESSION['username'] = $username;
+                header("location: index.php");
+              }
+            } else {
             }
-            mysqli_stmt_close($stmt);
+            mysqli_close($conn);
+         }
         }
-        mysqli_close($conn);
-    }
 ?>
         
     <div id="container" style="width:976px;">
-        <div class="content content-login" style="margin: auto; height:500px; background: 0; padding:1em;">
+        <div class="content content-login" style="margin: auto; height:500px; background: 0; padding: 5em 1em 1em 1em">
         <center>
             <div class="login-tlogin">
         <h1>Login</h1>
@@ -133,9 +115,10 @@
                 
         
             <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Login">
+                <input type="submit" class="btn btn-submit" value="Login">
             </div>
              <p>Don't have an account? <a href="register.php">Sign up now</a>.</p>
+                
         </form>
                 
             </div>
