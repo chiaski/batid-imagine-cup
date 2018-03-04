@@ -44,27 +44,32 @@
     </div>
  <?php
     require_once "php/config.php";
+
     if($_SERVER["REQUEST_METHOD"] == "POST") {
         $username = "";
         $password = "";
         $error = "";
         $_POST['username'] = mysqli_real_escape_string($conn, $_POST['username']);
         $_POST['password'] = mysqli_real_escape_string($conn, $_POST['password']);
+
         if(empty(trim($_POST["username"]))){
             $error = 'Please enter username.';
         }
         else {
             $username = trim($_POST["username"]);
         }
+
         if(empty(trim($_POST['password']))){
             $error = 'Please enter your password.';
         }
         else {
             $password = trim($_POST['password']);
         }
+
         if(empty($error)){
             $sql = "SELECT password FROM batid_db.users WHERE username='" . $username . "'";
             $query = mysqli_query($conn, $sql);
+
             if (!(mysqli_num_rows($query) == 0)) {
               $row=mysqli_fetch_array($result,MYSQLI_ASSOC);
               $hashed_password = $row['password'];
@@ -78,6 +83,7 @@
                 header("location: index.php");
               }
             } else {
+
             }
             mysqli_close($conn);
          }

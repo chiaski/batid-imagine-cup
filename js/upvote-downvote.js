@@ -7,7 +7,6 @@ function upvoteReport(id) {
     //Send the proper header information along with the request
     http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     http.send(params);
-    location.reload();
 }
 
 function downvoteReport(id) {
@@ -19,5 +18,4 @@ function downvoteReport(id) {
     //Send the proper header information along with the request
     http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     http.send(params);
-    location.reload();
 }
