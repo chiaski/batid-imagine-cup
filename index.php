@@ -1,10 +1,3 @@
-
-
-<!doctype html>
-<?php
-    require_once "php/config.php";
-    $id = $_GET['id'];
-?>
 <html lang="">
     <head>
         <meta charset="utf-8">
@@ -93,7 +86,10 @@
     </head>
 
     <body>
-
+      <?php
+          require_once "php/config.php";
+          $id = $_GET['id'];
+      ?>
 
     <div id="batid-header">
         <center>
@@ -476,7 +472,18 @@
                     }
                     updateForever();
                     <?php
-                        echo 'setTimeout("locateReport(' . $id . ');",2250)';
+                        echo 'setTimeout("locateReport(' . $id . ');",2250);';
+                        if(session_id() == '' || !isset($_SESSION)) {
+                          session_start();
+                          $username = $_SESSION['username'];
+                          if ($username) {
+                            echo ' alert("Logged in as: ' . $username .'");';
+                          } else {
+                            echo ' alert("Not Logged in! ' . $username . '");';
+                          }
+                        } else {
+                          echo ' alert("Something Wrong Happened")';
+                        }
                     ?>
 
                 </script>
