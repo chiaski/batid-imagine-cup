@@ -117,7 +117,6 @@
     <div class="batid-dropdown">
         <a>Home</a>
         <a>Map</a>
-        <a>Feed</a>
         <a>Account</a>
         <a>Settings</a>
         <a style="color:#ddd;">Log Out</a>
@@ -146,7 +145,7 @@
 
     </script>
 
-        <div id="intro">
+        <div id="intro" style="display:none;">
             <div class="intro-one"><img src="https://i.imgur.com/IoOm34W.png" /></div>
             <div class="intro-two" style="background-image:url('https://i.imgur.com/dwnmi9K.png');height:1296px;"><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
                 <center><a onclick="$('#intro').fadeOut();"><img src="https://i.imgur.com/eDXILqM.png" /><br />
@@ -300,7 +299,7 @@
                             <tr>
                                 <td class="report-label-area">Radius<br /><span class="batid-radius-container"><span class="batid-radius-show"></span> meters</span></td>
                                 <td>
-  <input style="width:100%;" type="range" min="10" max="150" value="50" step="5" class="slider" id="radius" name="radius" oninput="showVal(this.value)" onchange="showVal(this.value)"></td>
+                        <input style="width:100%;" type="range" min="10" max="150" value="50" step="5" class="slider" id="radius" name="radius" oninput="showVal(this.value)" onchange="showVal(this.value)"></td>
                             </tr>
                         </table>
                         <center><input class='report-title' type="text" id='title' name='title' placeholder="Report title"/></center>
@@ -319,24 +318,15 @@
                 </div>
 
                 <script>
-                    var report_popup = $('#report-form');
-
                     $("#report-form-close").click(function() {
                         $(".batid-report").fadeOut("fast");
                         $("#report").fadeOut("fast");
                     });
-
-
                     $(".batid-report-behind").click(function() {
                         $(".batid-report").fadeOut("slow");
                         $(".batid-report-behind").fadeOut("slow");
                     });
-
-
-                    function displayPopup(e) {
-                        // Display report popup
-                        console.log("");
-                    }
+                    
                     function timeSince(date) {
                         var seconds = Math.floor((new Date() - date) / 1000);
                         var interval = Math.floor(seconds / 31536000);
@@ -361,13 +351,51 @@
                         }
                         return Math.floor(seconds) + " seconds";
                     }
-
-
+                    // Map stuff
+                    var batid = L.map('batid-map', {zoom : 23}).locate({setView : true, enableHighAccuracy : true, watch : true});
+                    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+                        maxZoom: 48,
+                        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+                            '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                            'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+                        id: 'mapbox.streets'
+                    }).addTo(batid);
+                    var all_markers = L.layerGroup([]);
+                    var Marker = L.Icon.extend({
+                        options: {
+                            shadowUrl: 'img/shadow.png',
+                            iconSize: [10, 10],
+                            shadowSize: [12, 18],
+                            iconAnchor: [5, 5],
+                            shadowAnchor: [7, 3],
+                            popupAnchor: [0, -5]
+                        }
+                    });
+                    var marker_colors = {
+                        red : new Marker({iconUrl: 'img/red.png'}),
+                        yellow : new Marker({iconUrl: 'img/yellow.png'}),
+                        green : new Marker({iconUrl: 'img/green.png'}),
+                        white : new Marker({iconUrl: 'img/white.png'}),
+                    };
                     function addMarker(data) {
-                        var marker = L.marker([data.latitude, data.longitude], {icon: marker_colors[data.severity]});
-                        console.log(marker);
-                        var area = L.circle([data.latitude, data.longitude], {radius: data.radius, color: data.severity, opacity:.5}).on('click', displayPopup);
-
+                        var marker = L.marker([data.latitude, data.longitude],
+                            {icon: marker_colors[data.severity]}).on('click', function () {
+                                    batid.panTo([data.latitude, data.longitude]);
+                                    var t = data.time_stamp.split(/[- :]/);
+                                    var post_time = new Date(Date.UTC(t[0], t[1]-1, t[2], t[3], t[4], t[5]));
+                                    var formatted_time = timeSince(post_time.getTime());
+                                    $('.batid-area').css('top', '-20px');
+                                    $('.batid-area-title').text(data.title);
+                                    $('.batid-area-desc').text(data.content);
+                                    $('.batid-area-timestamp').text(formatted_time);
+                                    $('.report-txt-severity').addClass('severity-'+data.severity);
+                                    $('.batid-txt-votes').text(data.upvotes - data.downvotes);
+                        });
+                        var area = L.circle([data.latitude, data.longitude], data.radius, 
+                            {
+                                color: data.severity, 
+                                opacity: .5
+                        });
                         all_markers.addLayer(area);
                         all_markers.addLayer(marker);
                         var t = data.time_stamp.split(/[- :]/);
@@ -376,23 +404,19 @@
                         // Add report data to the feed
                         var verifiedmultimedia = '';
                         if(data.multimedia != 0) {
-                            verifiedmultimedia += '<a href="'+all_multimedia[data.id]+'" data-lightbox="' + data.id + '"><img src="'+all_multimedia[data.id]+'" title="multimedia embed" alt="multimedia embed" /></a>';
+                            verifiedmultimedia += '<img src="'+all_multimedia[data.id]+'" title="multimedia embed" alt="multimedia embed"';
                         }
-
-
                         var verifiedstring = '';
                         if(data.verified != 0){
                             verifiedstring = ' <!--Verified--> \
                                <div class="report-verified"> \
                                <a><i class="fas fa-external-link-square-alt"></i> Journal Link Here</a></div>'
                         }
-
                         var votes = data.upvotes-data.downvotes;
-
                         var keithwtf = '<div class="report report-status" id="report-'+data.id+'"> \
                             <div class="report-box-votes">\
-                                <button class="report-btn report-btn-vote report-btn-upvotes" onclick="upvoteReport('+data.id+');document.reload()"><i class="fa fa-angle-up"></i></button>\
-                                <button class="report-btn report-btn-vote  report-btn-downvotes" onclick="downvoteReport('+data.id+');document.reload()"><i class="fas fa-angle-down"></i></button>\
+                                <button class="report-btn report-btn-vote report-btn-upvotes" onclick="upvoteReport('+data.id+');"><i class="fa fa-angle-up"></i></button>\
+                                <button class="report-btn report-btn-vote  report-btn-downvotes" onclick="downvoteReport('+data.id+');"><i class="fas fa-angle-down"></i></button>\
                             </div>\
                             <!--Time-->\
                             <div class="report-txt-time">'+formatted_time+'</div>\
@@ -421,50 +445,26 @@
                                 var old = $('.feed-verified').html();
                                 $('.feed-verified').html(keithwtf + old);
                             }
-                        }
+                            else if($('.feed-verified').find('#report-'+data.id).length) {
+                                if($('#report-'+data.id).find('.report-txt-votecount').text() != '<i class="fas fa-thumbs-up"></i> '+votes) {
+                                    $('#report-'+data.id).find('.report-txt-votecount').html('<i class="fas fa-thumbs-up"></i> '+votes)
+                                }
+                            }
+                        } 
                         else {
                             if(!$('.feed-live').find('#report-'+data.id).length && votes >= 0) {
                                 var old = $('.feed-live').html();
                                 $('.feed-live').html(keithwtf + old);
                             }
+                            else if($('.feed-live').find('#report-'+data.id).length) {
+                                if($('#report-'+data.id).find('.report-txt-votecount').html() != '<i class="fas fa-thumbs-up"></i> '+votes) {
+                                    $('#report-'+data.id).find('.report-txt-votecount').html('<i class="fas fa-thumbs-up"></i> '+votes)
+                                }
+                            }
                         }
                     }
-
-                    // Map stuff
-                    var batid = L.map('batid-map', {zoom : 23}).locate({setView : true, enableHighAccuracy : true, watch : true});
-                    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-                        maxZoom: 48,
-                        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-                            '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                            'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-                        id: 'mapbox.streets'
-                    }).addTo(batid);
-
-                    var all_markers = L.layerGroup([]);
-                    var Marker = L.Icon.extend({
-                        options: {
-                            shadowUrl: 'img/shadow.png',
-                            iconSize: [10, 10],
-                            shadowSize: [12, 18],
-                            iconAnchor: [5, 5],
-                            shadowAnchor: [7, 3],
-                            popupAnchor: [0, -5]
-                        }
-                    });
-                    var marker_colors = {
-                        red : new Marker({iconUrl: 'img/red.png'}),
-                        yellow : new Marker({iconUrl: 'img/yellow.png'}),
-                        green : new Marker({iconUrl: 'img/green.png'}),
-                        white : new Marker({iconUrl: 'img/white.png'}),
-                    };
-                    function report(e) {
-                        report_popup.css("display", "block");
-                        $('#lat').val(e.latlng.lat);
-                        $('#lng').val(e.latlng.lng);
-                    }
+                    
                     // Do not touch: Auto update the feed every 10 seconds
-                    var count = 0;
-                    var initial_count = 5;
                     function updateForever() {
                         fetchReports();
                         fetchComments();
@@ -474,23 +474,12 @@
                             addMarker(all_reports[i]);
                         }
                         all_markers.addTo(batid);
-
-                        if(count < initial_count) {
-                            // Update every 1 second to have something on the map
-                            count++;
-                            var old_repeater = window.setTimeout(updateForever, 1000);
-                        }
-                        else {
-                            // After there are stuff on the map, update every 10 seconds instead
-                            window.clearTimeout(old_repeater);
-                            var new_repeater = window.setTimeout(updateForever, 10000);
-                        }
+                        var repeater = window.setTimeout(updateForever, 500);
                     }
                     updateForever();
                     <?php
                         echo 'setTimeout("locateReport(' . $id . ');",2250);';
                     ?>
-
                 </script>
             </div>
         </div>
