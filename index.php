@@ -300,7 +300,7 @@
                             <tr>
                                 <td class="report-label-area">Radius<br /><span class="batid-radius-container"><span class="batid-radius-show"></span> meters</span></td>
                                 <td>
-  <input style="width:100%;" type="range" min="10" max="150" value="50" step="5" class="slider" id="radius" oninput="showVal(this.value)" onchange="showVal(this.value)"></td>
+  <input style="width:100%;" type="range" min="10" max="150" value="50" step="5" class="slider" id="radius" name="radius" oninput="showVal(this.value)" onchange="showVal(this.value)"></td>
                             </tr>
                         </table>
                         <center><input class='report-title' type="text" id='title' name='title' placeholder="Report title"/></center>
