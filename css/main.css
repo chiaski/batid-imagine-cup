@@ -80,7 +80,7 @@ body{
     position:absolute;
     float:left;
     background: #e8bc37;
-    padding:1em;
+    padding:1em 1em 6em 1em;
     z-index:9999;
     left:-600px;
    -webkit-transition: all 1s linear;
