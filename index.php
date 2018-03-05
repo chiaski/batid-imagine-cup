@@ -9,6 +9,7 @@
         <link rel="stylesheet" href="css/normalize.min.css">
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/report.css">
+        <link rel="stylesheet" href="css/etc.css">
 
         <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
 
@@ -244,15 +245,20 @@
 
                 </div>
             </div>
+            
+            <div class="batid-map" id="batid-map" style="width:800px; background: none; border:2px solid #fff;">
 
             <div class="batid-map-severitybar">
+            <div class="severitybar">
+            <center>
             <span class="severitycircle" style="background: #edebd1;"></span> White 
             <span class="severitycircle" style="background: #21844b;"></span> Green 
             <span class="severitycircle" style="background: #e2a415;"></span> Yellow 
             <span class="severitycircle" style="background: #e21515;"></span> Red
+            </center>
             </div>
-            
-            <div class="batid-map" id="batid-map" style="width:800px; background: none; border:2px solid #fff;">
+               <span class="text-username">User: <?php if($curusername){ echo $curusername;}else{echo '<a href="register.php">Anonymous</a>';} ?></span>
+            </div>
                 <!--Batid map here-->
                 <h1>Map</h1>
             </div>
@@ -273,7 +279,7 @@
                     <div class="report-inner">
                         <span id="report-form-close" class="close" style="float:left;">&times;</span>
                         <h2>Your area:</h2>
-                        <h2 class="report-area"><span class="batid-txt-locname">Vermosa</span></h2>
+                        <h2 class="report-area"><span class="batid-txt-locname">Microsoft Office</span></h2>
                     <form id="report-content" class="modal-content" action='php/add-report.php' method='post' onsubmit='return validate();'>
                         <!-- Coordinates -->
                         <input class='report-box-coord' type="text" id='lng' name='lng' placeholder="Longitude"/>
@@ -371,8 +377,8 @@
                     var Marker = L.Icon.extend({
                         options: {
                             shadowUrl: 'img/shadow.png',
-                            iconSize: [10, 10],
-                            shadowSize: [12, 18],
+                            iconSize: [25, 25],
+                            shadowSize: [22, 28],
                             iconAnchor: [5, 5],
                             shadowAnchor: [7, 3],
                             popupAnchor: [0, -5]
