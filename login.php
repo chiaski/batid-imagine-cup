@@ -63,7 +63,7 @@
             $query = mysqli_query($conn, $sql);
 
             if (!(mysqli_num_rows($query) == 0)) {
-              $row=mysqli_fetch_array($result,MYSQLI_ASSOC);
+              $row=mysqli_fetch_array($query, MYSQLI_ASSOC);
               $hashed_password = $row['password'];
               $verify = password_verify($password, $hashed_password);
               if ($verify) {
