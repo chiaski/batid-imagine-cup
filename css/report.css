@@ -56,10 +56,10 @@
 .report-box-inner-left{float:left;bottom:15px;}
 
 /*Severity Classes*/
-.severity-red{color:#CF0E38;}
-.severity-yellow{color:#DBA227;}
-.severity-green{color:#399C21;}
-.severity-white{color:#D1D1D1;}
+.severity-red{color:#CF0E38 !important;}
+.severity-yellow{color:#DBA227 !important;}
+.severity-green{color:#399C21 !important;}
+.severity-white{color:#D1D1D1 ;}
 
 /* Feed */
 
