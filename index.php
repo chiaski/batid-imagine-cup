@@ -240,7 +240,7 @@
                     </div>
 
                     <div class="batid-area-lower-right">
-                        <i class="fas fa-thumbs-up"> 3</i> <span class="batid-txt-votes">Votes</span>
+                        <i class="fas fa-thumbs-up"></i> <span class="batid-txt-votes">Votes</span>
                     </div>
 
                 </div>
