@@ -426,7 +426,7 @@
                                <a><i class="fas fa-external-link-square-alt"></i> Journal Link Here</a></div>'
                         }
                         var votes = data.upvotes-data.downvotes;
-                        var keithwtf = '<div class="report report-status" id="report-'+data.id+'"> \
+                        var keithwtf = '<a href="?id='+data.id+'"><div class="report report-status" id="report-'+data.id+'"> \
                             <div class="report-box-votes">\
                                 <button class="report-btn report-btn-vote report-btn-upvotes" onclick="upvoteReport('+data.id+');"><i class="fa fa-angle-up"></i></button>\
                                 <button class="report-btn report-btn-vote  report-btn-downvotes" onclick="downvoteReport('+data.id+');"><i class="fas fa-angle-down"></i></button>\
@@ -450,7 +450,7 @@
                                     <!--VOTE COUNT HERE-->\
                                     <span style="padding-left:.7em;margin:.5em;" class="report-txt report-txt-votecount"> <i class="fas fa-thumbs-up"></i> '+votes+'</span><br />\
                                     <button style="margin:.5em;color:#949285;" class="report-btn report-btn-comment" onclick="commentReport('+data.id+')"><i class="fas fa-comment"></i></button>\
-                                </div></div></div>';
+                                </div></div></div></a>';
                         // HAXOR
                         // Check if new content is already on feed. If not, add
                         if(data.verified != 0) {
