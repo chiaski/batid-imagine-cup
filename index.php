@@ -141,7 +141,10 @@
                             }
                         }
                     }
-
+    
+    function closeBatidArea{
+        $(".batid-area").fadeOut();
+    }
 
 
     </script>
@@ -231,6 +234,7 @@
 
             <div class="batid-area">
             <!--White box that displays information about reports-->
+			<span style="float:right;" class="batid-area-close" onClick="closeBatidArea()">&times;</span>
             <h1 class="batid-area-title">Robbery and mass shooting rawr</h1>
             <h2 class="batid-area-subtitle"><i class="fas fa-map-marker"></i> At this area around <i class="fas fa-clock"></i> <span class="batid-area-timestamp"></span></h2>
             <p class="batid-area-desc">Event description lorem ipsum dolor sit amet hello hello hello hello hello hello gjasdgsa  dgas kdg as</p>
