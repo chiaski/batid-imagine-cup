@@ -432,7 +432,7 @@
                                <a><i class="fas fa-external-link-square-alt"></i> Journal Link Here</a></div>'
                         }
                         var votes = data.upvotes-data.downvotes;
-                        var keithwtf = '<a href="?id='+data.id+'"><div class="report report-status" id="report-'+data.id+'"> \
+                        var keithwtf = '<a><div class="report report-status" id="report-'+data.id+'"> \
                             <div class="report-box-votes">\
                                 <button class="report-btn report-btn-vote report-btn-upvotes" onclick="upvoteReport('+data.id+');"><i class="fa fa-angle-up"></i></button>\
                                 <button class="report-btn report-btn-vote  report-btn-downvotes" onclick="downvoteReport('+data.id+');"><i class="fas fa-angle-down"></i></button>\
