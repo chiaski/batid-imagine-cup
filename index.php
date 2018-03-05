@@ -25,13 +25,8 @@
             if(session_id() == '' || !isset($_SESSION)) {
               session_start();
               $curusername = $_SESSION['username'];
-              if ($curusername) {
-                echo ' alert("Logged in as: ' . $curusername .'");';
-              } else {
-                echo ' alert("Not Logged in! ' . $curusername . '");';
-              }
             } else {
-              echo ' alert("Something Wrong Happened")';
+              $curusername = "";
             }
             ?>
             function validate() {
@@ -81,10 +76,15 @@
 
 
             function addReport(){
-             $(".batid-report").fadeToggle();
-             $(".batid-report-behind").fadeToggle();
-              $("#report").fadeToggle();
-                getLocation();
+                if("<?php echo $curusername; ?>".length == 0) {
+                    location.assign("login.php");
+                }
+                else {
+                    $(".batid-report").fadeToggle();
+                    $(".batid-report-behind").fadeToggle();
+                    $("#report").fadeToggle();
+                    getLocation();
+                }
             }
 
 
