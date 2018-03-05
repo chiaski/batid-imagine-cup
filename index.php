@@ -250,12 +250,14 @@
 
             <div class="batid-map-severitybar">
             <div class="severitybar">
+            <a href="img/reportsys.png" data-lightbox="waawawa">
             <center>
             <span class="severitycircle" style="background: #edebd1;"></span> White 
             <span class="severitycircle" style="background: #21844b;"></span> Green 
             <span class="severitycircle" style="background: #e2a415;"></span> Yellow 
             <span class="severitycircle" style="background: #e21515;"></span> Red
             </center>
+            </a>
             </div>
                <span class="text-username">User: <?php if($curusername){ echo $curusername;}else{echo '<a href="register.php">Anonymous</a>';} ?></span>
             </div>
@@ -282,8 +284,8 @@
                         <h2 class="report-area"><span class="batid-txt-locname">Microsoft Office</span></h2>
                     <form id="report-content" class="modal-content" action='php/add-report.php' method='post' onsubmit='return validate();'>
                         <!-- Coordinates -->
-                        <input class='report-box-coord' type="text" id='lng' name='lng' placeholder="Longitude"/>
-                        <input class='report-box-coord' type="text" id='lat' name='lat' placeholder="Latitude"/>
+                        <input class='report-box-coord' type="text" id='lng' value='121.025722' name='lng' placeholder="Longitude"/>
+                        <input class='report-box-coord' type="text" id='lat' value='14.553167' name='lat' placeholder="Latitude"/>
 
                         <!-- Severity -->
 
