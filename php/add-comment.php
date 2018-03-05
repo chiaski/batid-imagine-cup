@@ -38,4 +38,6 @@
 		echo $code.": ".$error_message."<br/>";
 	}
 
+	header('Location: '.$_SERVER['HTTP_REFERER']);
+	exit;
 ?>
