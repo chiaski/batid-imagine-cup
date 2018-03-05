@@ -258,8 +258,8 @@
             <span class="severitycircle" style="background: #e21515;"></span> Red
             </center>
             </a>
-            </div>
-               <span class="text-username">User: <?php if($curusername){ echo $curusername;}else{echo '<a href="register.php">Anonymous</a>';} ?></span>
+            </div><br>
+               <center><span class="text-username">User: <?php if($curusername){ echo $curusername;}else{echo '<a href="register.php">Anonymous</a>';} ?></span></center>
             </div>
                 <!--Batid map here-->
                 <h1>Map</h1>
